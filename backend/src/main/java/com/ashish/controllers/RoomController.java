@@ -39,4 +39,11 @@ public class RoomController {
         List<String> roomTypes = roomService.getAllRoomTypes();
         return ResponseEntity.status(HttpStatus.OK).body(roomTypes);
     }
+
+    @GetMapping
+    public ResponseEntity<List<RoomResponse>> getAllRoomList() throws SQLException {
+        List<RoomResponse> list = roomService.getAllTheRooms();
+    }
+
+
 }

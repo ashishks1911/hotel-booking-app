@@ -1,5 +1,6 @@
 package com.ashish.services;
 
+import com.ashish.dto.RoomResponse;
 import com.ashish.models.Room;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,4 +15,7 @@ public interface RoomService {
     Room addNewRoom(MultipartFile photo, String roomType, BigDecimal roomPrice) throws IOException, SQLException;
 
     List<String> getAllRoomTypes();
+
+    List<RoomResponse> getAllTheRooms() throws SQLException;
+    byte[] getRoomPhotoByRoomId(Long id) throws SQLException;
 }

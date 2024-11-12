@@ -51,6 +51,11 @@ const AddRoom = () => {
       setErrorMessage(err.message);
     }
 
+    setTimeout(()=>{
+      setSuccessMessage("")
+      setErrorMessage("")
+    }, 3000)
+
   }
 
 
@@ -62,6 +67,14 @@ const AddRoom = () => {
           <div className='col-md-8 lg-6'>
 
             <h2 className='mt-5 mb-2'>Add New Room</h2>
+
+            { successMessage && (
+              <div className='alert alert-success fade show'>{successMessage}</div>
+            )}
+
+            { errorMessage && (
+              <div className='alert alert-danger fade show'>{errorMessage}</div>
+            )}
 
             <form action="" onSubmit={handleSubmit} >
 
