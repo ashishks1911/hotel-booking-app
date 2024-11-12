@@ -32,6 +32,7 @@ const RoomTypeSelector = ({handleRoomInputChange, newRoom}) => {
           id="roomType"
           className="form-select"
           value={newRoom.roomType}
+          required
           onChange={(e)=>{
             if(e.target.value === "Add New"){
               setShowNewRoomTypesInput(true);
