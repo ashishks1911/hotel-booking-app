@@ -6,10 +6,9 @@ const RoomFilter = ({data, setFilteredData}) => {
   const handleSelectChange = (e) => {
     const selectedRoomType = e.target.value;
     setFilter(selectedRoomType);
-    const filteredRooms = data.filter((room) => {
+    const filteredRooms = data.filter((room) => 
       room.roomType.toLowerCase()
-      .includes(selectedRoomType.toLowerCase())
-    })
+      .includes(selectedRoomType.toLowerCase()))
     setFilteredData(filteredRooms);
   }
 
@@ -29,7 +28,7 @@ const RoomFilter = ({data, setFilteredData}) => {
       <span className='input-group-text' id='room-type-filter'>
         Filter room by type
       </span>
-      <select name="" id=""
+      <select 
       className='form-select'
       value={filter}
       onChange={handleSelectChange}>
@@ -37,9 +36,8 @@ const RoomFilter = ({data, setFilteredData}) => {
         { roomTypes.map((type, index) =>(
           <option key={index} value={type}>{type}</option>
         ))}
-
       </select>
-      <button className='btn btn-hotel' type='button'
+      <button className='btn btn-hotel mx-1' type='button'
       onClick={clearFilter}>
         Clear Filter
       </button>
