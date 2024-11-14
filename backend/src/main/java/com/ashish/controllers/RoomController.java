@@ -43,6 +43,7 @@ public class RoomController {
     @GetMapping
     public ResponseEntity<List<RoomResponse>> getAllRoomList() throws SQLException {
         List<RoomResponse> list = roomService.getAllTheRooms();
+        return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
 
