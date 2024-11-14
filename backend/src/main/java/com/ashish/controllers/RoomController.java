@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin("")
 @RequestMapping("/rooms")
 public class RoomController {
 
@@ -44,6 +44,12 @@ public class RoomController {
     public ResponseEntity<List<RoomResponse>> getAllRoomList() throws SQLException {
         List<RoomResponse> list = roomService.getAllTheRooms();
         return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+    @DeleteMapping("{roomId}")
+    public ResponseEntity<Void> deleteRoomById(@PathVariable("roomId") Long roomId){
+        roomService.deleteRoomById(roomId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
