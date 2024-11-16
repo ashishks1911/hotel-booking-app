@@ -58,7 +58,7 @@ export async function updateRoom(roomId, room) {
         formData.append("roomPrice", room.roomPrice)
 
         const result = await api.put(`/rooms/${roomId}`, formData)
-        return result
+        return result.data
     } catch (error) {
         throw new Error('Error Updating room')
     }

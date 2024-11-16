@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getRoomById, updateRoom } from '../utils/ApiFunctions'
 import { useParams } from 'react-router-dom'
+import RoomTypeSelector from '../common/RoomTypeSelector'
 
 const EditRoom = () => {
   const [room, setRoom] = useState({
@@ -20,6 +21,20 @@ const EditRoom = () => {
     setRoom({ ...room, photo: selectedImage });
     setImagePreview(URL.createObjectURL(selectedImage));
   }
+  const handleRoomInputChange = (e) => {
+    const name = e.target.name;
+    let val = e.target.value;
+    if (name === "roomPrice") {
+      if (!isNaN(val)) {
+        parseInt(val);
+      } else {
+        val = "";
+      }
+    }
+    //using spread syntax ...used for shallow copy
+    console.log([name]);
+    setRoom({ ...room, [name]: val })
+  }
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -34,8 +49,8 @@ const EditRoom = () => {
       if (response.status === 200) {
         setSuccessMessage("Room Updated Successfully!!!");
         const updatedRoom = await getRoomById(roomId);
-        setRoom(updateRoom);
-        setImagePreview(updateRoom.photo);
+        setRoom(updatedRoom);
+        setImagePreview(updatedRoom.photo);
         setErrorMessage("");
       }
       else {
@@ -51,6 +66,7 @@ const EditRoom = () => {
     const fetchRoom = async () => {
       try {
         const roomData = await getRoomById(roomId)
+        console.log(roomData)
         setRoom(roomData)
         setImagePreview(roomData.photo)
         
@@ -94,7 +110,7 @@ const EditRoom = () => {
                 <div>
                   <RoomTypeSelector
                     handleRoomInputChange={handleRoomInputChange}
-                    newRoom={newRoom}
+                    newRoom={room}
                   />
                 </div>
               </div>
@@ -108,7 +124,7 @@ const EditRoom = () => {
                   className='form-control'
                   id='roomPrice'
                   name='roomPrice'
-                  value={newRoom.roomPrice}
+                  value={room.roomPrice}
                   onChange={handleRoomInputChange}
                   required
                 />
