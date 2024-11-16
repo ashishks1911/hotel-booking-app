@@ -2,6 +2,7 @@ package com.ashish.services;
 
 import com.ashish.dto.BookingResponse;
 import com.ashish.dto.RoomResponse;
+import com.ashish.exceptions.InternalServerException;
 import com.ashish.exceptions.PhotoRetrivalException;
 import com.ashish.exceptions.ResourceNotFoundException;
 import com.ashish.models.BookedRoom;
@@ -109,6 +110,30 @@ public class RoomServiceImpl implements RoomService{
             roomRepository.deleteById(roomId);
         else
             throw new ResourceNotFoundException("Room Not Found with id :" + roomId);
+    }
+
+    @Override
+    public RoomResponse updateRoom(Long roomId, MultipartFile photo, String roomType, BigDecimal roomPrice) throws IOException, SQLException, InternalServerException {
+        byte[] photoBytes = photo!=null && !photo.isEmpty()? photo.getBytes() : getRoomPhotoByRoomId(roomId);
+
+        Room room  = roomRepository.findById(roomId).orElseThrow(() -> new ResourceNotFoundException("Room not found"));
+        if (roomType!=null) room.setRoomType(roomType);
+        if (roomPrice!=null) room.setRoomPrice(roomPrice);
+        if(photoBytes!=null && photoBytes.length > 0 ) {
+            try {
+                room.setPhoto(new SerialBlob(photoBytes));
+            }catch (SQLException e){
+                throw new InternalServerException("Error updating room");
+            }
+        }
+        Room savedRoom = roomRepository.save(room);
+        return getRoomResponse(savedRoom);
+    }
+
+    @Override
+    public RoomResponse getRoomById(Long roomId) {
+        Room room = roomRepository.findById(roomId).orElseThrow(()->new ResourceNotFoundException("Room not Found"));
+        return getRoomResponse(room);
     }
 
 }

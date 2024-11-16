@@ -1,6 +1,7 @@
 package com.ashish.services;
 
 import com.ashish.dto.RoomResponse;
+import com.ashish.exceptions.InternalServerException;
 import com.ashish.models.Room;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,4 +21,8 @@ public interface RoomService {
     byte[] getRoomPhotoByRoomId(Long id) throws SQLException;
 
     void deleteRoomById(Long roomId);
+
+    RoomResponse updateRoom(Long roomId, MultipartFile photo, String roomType, BigDecimal roomPrice) throws IOException, SQLException, InternalServerException;
+
+    RoomResponse getRoomById(Long roomId);
 }

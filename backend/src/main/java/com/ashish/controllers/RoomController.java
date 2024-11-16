@@ -13,9 +13,10 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@CrossOrigin("")
+@CrossOrigin
 @RequestMapping("/rooms")
 public class RoomController {
 
@@ -52,5 +53,20 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @PutMapping("/roomId")
+    public ResponseEntity<RoomResponse> updateRoom(
+            @PathVariable Long roomId,
+            @RequestParam(value = "photo", required = false) MultipartFile photo,
+            @RequestParam("roomType") String roomType,
+            @RequestParam("roomPrice") BigDecimal roomPrice) throws SQLException, IOException {
+        RoomResponse response = roomService.updateRoom(roomId, photo, roomType, roomPrice);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/{roomId}")
+    public ResponseEntity<Optional<RoomResponse>> getRoomById(@PathVariable Long roomId){
+        RoomResponse roomResponse = roomService.getRoomById(roomId);
+        return ResponseEntity.ok(Optional.of(roomResponse));
+    }
 
 }
