@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { deleteRoom, getAllRooms } from "../utils/ApiFunctions";
-import { Col } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import RoomFilter from "../common/RoomFilter";
 import RoomPaginator from "../common/RoomPaginator";
 import { FaEdit, FaEye, FaPlus, FaTrashAlt } from "react-icons/fa";
@@ -35,20 +35,20 @@ const Rooms = () => {
     }
   }
 
-  const handleDelete = async (roomId)=>{
+  const handleDelete = async (roomId) => {
     try {
       const response = await deleteRoom(roomId)
-      if(response===''){
+      if (response === '') {
         setSuccessMessage(`Room No ${roomId} was deleted`);
         fetchRooms()
-      }else{
+      } else {
         console.log(`Error deleting room : ${response.message}`)
       }
 
     } catch (error) {
       setErrorMessage(error.message)
     }
-    setTimeout(()=>{
+    setTimeout(() => {
       setErrorMessage("")
       setSuccessMessage("")
     }, 3000)
@@ -74,7 +74,7 @@ const Rooms = () => {
   const indexOFirstRoom = indexOfLastRoom - roomsPerPage;
   const currentRooms = filteredRooms.slice(indexOFirstRoom, indexOfLastRoom);
 
-  const handlePaginationClick = (pageNumber)=> {
+  const handlePaginationClick = (pageNumber) => {
     setCurrentPage(pageNumber)
   }
 
@@ -87,13 +87,17 @@ const Rooms = () => {
           <section className="my-5 container">
             <div className="d-flex justify-content-between mb-3 mt-5">
               <h2>Existing Rooms</h2>
-              <Link to={"/rooms/add"}>
-                <FaPlus />Add Room
-              </Link>
             </div>
-            <Col md={6} className="mb-3 mb-md-0">
-              <RoomFilter data={rooms} setFilteredData={setFilteredRooms} />
-            </Col>
+            <Row>
+              <Col md={6} className="mb-3 mb-md-0">
+                <RoomFilter data={rooms} setFilteredData={setFilteredRooms} />
+              </Col>
+              <Col md={6} className="d-flex justify-content-end">
+                <Link to={"/rooms/add"}>
+                  <FaPlus />Add Room
+                </Link>
+              </Col>
+            </Row>
 
             <table className="table table-bordered table-hover">
               <thead>
@@ -118,13 +122,13 @@ const Rooms = () => {
                         </span>
                         <span className="btn btn-warning btn-sm">
                           {/* Edit */}
-                          <FaEdit/>
+                          <FaEdit />
                         </span>
                       </Link>
 
                       <button className="btn btn-danger btn-sm"
-                        onClick={()=> handleDelete(room.id)}>
-                        <FaTrashAlt/>
+                        onClick={() => handleDelete(room.id)}>
+                        <FaTrashAlt />
                       </button>
                     </td>
                   </tr>
