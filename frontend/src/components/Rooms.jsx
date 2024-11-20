@@ -85,7 +85,7 @@ const Rooms = () => {
       ) : (
         <>
           <section className="my-5 container">
-            <div className="d-flex justify-content-center mb-3 mt-5">
+            <div className="d-flex justify-content-between mb-3 mt-5">
               <h2>Existing Rooms</h2>
               <Link to={"/rooms/add"}>
                 <FaPlus />Add Room
