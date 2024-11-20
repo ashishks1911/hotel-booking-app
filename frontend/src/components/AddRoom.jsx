@@ -51,7 +51,7 @@ const AddRoom = () => {
       setErrorMessage(err.message);
     }
 
-    setTimeout(()=>{
+    setTimeout(() => {
       setSuccessMessage("")
       setErrorMessage("")
     }, 3000)
@@ -68,11 +68,11 @@ const AddRoom = () => {
 
             <h2 className='mt-5 mb-2'>Add New Room</h2>
 
-            { successMessage && (
+            {successMessage && (
               <div className='alert alert-success fade show'>{successMessage}</div>
             )}
 
-            { errorMessage && (
+            {errorMessage && (
               <div className='alert alert-danger fade show'>{errorMessage}</div>
             )}
 
@@ -83,9 +83,9 @@ const AddRoom = () => {
                   Room Type
                 </label>
                 <div>
-                  <RoomTypeSelector 
-                  handleRoomInputChange={handleRoomInputChange}
-                  newRoom = {newRoom}
+                  <RoomTypeSelector
+                    handleRoomInputChange={handleRoomInputChange}
+                    newRoom={newRoom}
                   />
                 </div>
               </div>
@@ -98,40 +98,38 @@ const AddRoom = () => {
                   type='number'
                   className='form-control'
                   id='roomPrice'
-                  name='roomPrice' 
+                  name='roomPrice'
                   value={newRoom.roomPrice}
                   onChange={handleRoomInputChange}
                   required
-                  />
+                />
               </div>
               <div></div>
               <div className='mb-3'>
                 <label htmlFor='photo' className='form-label'>
                   Room Photo
                 </label>
-                <input 
-                type="file"
-                className='form-control'
-                id='photo'
-                name='photo'
-                onChange={handleImageChange} />
+                <input
+                  type="file"
+                  className='form-control'
+                  id='photo'
+                  name='photo'
+                  onChange={handleImageChange} />
                 {imagePreview && (
-                <img src={imagePreview} 
-                alt="Preview Room Photo"
-                style={{ maxWidth:"400px", maxHeight:"600px"}}
-                className='mb-3'
-                />
+                  <img src={imagePreview}
+                    alt="Preview Room Photo"
+                    style={{ maxWidth: "400px", maxHeight: "600px" }}
+                    className='mb-3'
+                  />
                 )}
-              
+
               </div>
               <div className='d-grid d-md-flex mt-2'>
+                <Link to={"/rooms"} className='btn btn-outline-info ml-5'>Back</Link>
                 <button className='btn btn-outline-primary ml-5'>Save Room</button>
               </div>
-          
-
             </form>
           </div>
-
         </div>
       </section>
     </>
