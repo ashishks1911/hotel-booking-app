@@ -9,6 +9,7 @@ import EditRoom from './pages/EditRoom.jsx'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import RoomListing from './components/RoomListing.jsx'
+import Admin from './admin/Admin.jsx'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
             <Route path='/rooms' element={<Rooms/>} />
             <Route path='/rooms/add' element={<AddRoom/>} />
             <Route path='/browse' element={<RoomListing/>} />
+            <Route path='/admin' element={<Admin/>} />
 
 
           </Routes>
