@@ -1,8 +1,13 @@
 package com.ashish.controllers;
 
+import com.ashish.dto.BookingResponse;
 import com.ashish.dto.RoomResponse;
+import com.ashish.exceptions.PhotoRetrivalException;
+import com.ashish.models.BookedRoom;
 import com.ashish.models.Room;
+import com.ashish.services.BookingService;
 import com.ashish.services.RoomService;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +29,9 @@ public class RoomController {
 
     @Autowired
     private RoomService roomService;
+
+    @Autowired
+    private BookingService bookingService;
 
     @PostMapping
     public ResponseEntity<RoomResponse> addNewRoom(
@@ -43,8 +53,18 @@ public class RoomController {
 
     @GetMapping
     public ResponseEntity<List<RoomResponse>> getAllRoomList() throws SQLException {
-        List<RoomResponse> list = roomService.getAllTheRooms();
-        return ResponseEntity.status(HttpStatus.OK).body(list);
+        List<Room> list = roomService.getAllTheRooms();
+        List<RoomResponse> roomResponses = new ArrayList<>();
+        for(Room room : list){
+            byte[] photoBytes = roomService.getRoomPhotoByRoomId(room.getId());
+            if (photoBytes!=null && photoBytes.length > 0){
+                String base64Photo = Base64.encodeBase64String(photoBytes);
+                RoomResponse response = getRoomResponse(room);
+                response.setPhoto(base64Photo);
+                roomResponses.add(response);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(roomResponses);
     }
 
     @DeleteMapping("{roomId}")
@@ -59,14 +79,38 @@ public class RoomController {
             @RequestParam(value = "photo", required = false) MultipartFile photo,
             @RequestParam("roomType") String roomType,
             @RequestParam("roomPrice") BigDecimal roomPrice) throws SQLException, IOException {
-        RoomResponse response = roomService.updateRoom(roomId, photo, roomType, roomPrice);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        Room response = roomService.updateRoom(roomId, photo, roomType, roomPrice);
+        return ResponseEntity.status(HttpStatus.OK).body(getRoomResponse(response));
     }
 
     @GetMapping("/{roomId}")
     public ResponseEntity<Optional<RoomResponse>> getRoomById(@PathVariable Long roomId){
-        RoomResponse roomResponse = roomService.getRoomById(roomId);
-        return ResponseEntity.ok(Optional.of(roomResponse));
+        Room roomResponse = roomService.getRoomById(roomId);
+        return ResponseEntity.ok(Optional.of(getRoomResponse(roomResponse)));
     }
 
+    private RoomResponse getRoomResponse(Room room) {
+        List<BookedRoom> bookings = bookingService.getAllBookingsByRoomId(room.getId());
+        List<BookingResponse> bookingInfo = bookings.stream()
+                .map(booking -> {
+                    return new BookingResponse(booking.getBookingId(), booking.getCheckInDate(), booking.getCheckOutDate()
+                            , booking.getBookingConfirmationCode());
+                }).toList();
+        byte[] photoBytes = null;
+        Blob blob =  room.getPhoto();
+        if (blob!=null){
+            try{
+                photoBytes =  blob.getBytes(1L, (int) blob.length());
+            }catch (Exception e){
+                throw  new PhotoRetrivalException("Error retriving photo");
+            }
+        }
+        return new RoomResponse(room.getId(),
+                room.getRoomType(),
+                room.getRoomPrice(),
+                room.isBooked(),
+                photoBytes,
+                bookingInfo);
+
+    }
 }

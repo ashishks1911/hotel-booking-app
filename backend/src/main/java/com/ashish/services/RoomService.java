@@ -17,12 +17,12 @@ public interface RoomService {
 
     List<String> getAllRoomTypes();
 
-    List<RoomResponse> getAllTheRooms() throws SQLException;
+    List<Room> getAllTheRooms() throws SQLException;
     byte[] getRoomPhotoByRoomId(Long id) throws SQLException;
 
     void deleteRoomById(Long roomId);
 
-    RoomResponse updateRoom(Long roomId, MultipartFile photo, String roomType, BigDecimal roomPrice) throws IOException, SQLException, InternalServerException;
+    Room updateRoom(Long roomId, MultipartFile photo, String roomType, BigDecimal roomPrice) throws IOException, SQLException, InternalServerException;
 
-    RoomResponse getRoomById(Long roomId);
+    Room getRoomById(Long roomId);
 }

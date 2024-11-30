@@ -29,8 +29,6 @@ public class RoomServiceImpl implements RoomService{
     @Autowired
     private RoomRepository roomRepository;
 
-    @Autowired
-    private BookingService bookingService;
     @Override
     public Room addNewRoom(MultipartFile file, String roomType, BigDecimal roomPrice) throws IOException, SQLException {
         Room room = new Room();
@@ -50,46 +48,12 @@ public class RoomServiceImpl implements RoomService{
     }
 
     @Override
-    public List<RoomResponse> getAllTheRooms() throws SQLException {
+    public List<Room> getAllTheRooms() throws SQLException {
         List<Room> list =  roomRepository.findAll();
-        List<RoomResponse> roomResponses = new ArrayList<>();
-        for(Room room : list){
-            byte[] photoBytes = getRoomPhotoByRoomId(room.getId());
-            if (photoBytes!=null && photoBytes.length > 0){
-                String base64Photo = Base64.encodeBase64String(photoBytes);
-                RoomResponse response = getRoomResponse(room);
-                response.setPhoto(base64Photo);
-                roomResponses.add(response);
-            }
-        }
-        return roomResponses;
-
+        return list;
     }
 
-    private RoomResponse getRoomResponse(Room room) {
-        List<BookedRoom> bookings = bookingService.getAllBookingsByRoomId(room.getId());
-        List<BookingResponse> bookingInfo = bookings.stream()
-                .map(booking -> {
-                    return new BookingResponse(booking.getBookingId(), booking.getCheckInDate(), booking.getCheckOutDate()
-                            , booking.getBookingConfirmationCode());
-                }).toList();
-        byte[] photoBytes = null;
-        Blob blob =  room.getPhoto();
-        if (blob!=null){
-            try{
-                photoBytes =  blob.getBytes(1L, (int) blob.length());
-            }catch (Exception e){
-                throw  new PhotoRetrivalException("Error retriving photo");
-            }
-        }
-        return new RoomResponse(room.getId(),
-                room.getRoomType(),
-                room.getRoomPrice(),
-                room.isBooked(),
-                photoBytes,
-                bookingInfo);
 
-    }
 
     @Override
     public byte[] getRoomPhotoByRoomId(Long id) throws SQLException {
@@ -113,7 +77,7 @@ public class RoomServiceImpl implements RoomService{
     }
 
     @Override
-    public RoomResponse updateRoom(Long roomId, MultipartFile photo, String roomType, BigDecimal roomPrice) throws IOException, SQLException, InternalServerException {
+    public Room updateRoom(Long roomId, MultipartFile photo, String roomType, BigDecimal roomPrice) throws IOException, SQLException, InternalServerException {
         byte[] photoBytes = photo!=null && !photo.isEmpty()? photo.getBytes() : getRoomPhotoByRoomId(roomId);
 
         Room room  = roomRepository.findById(roomId).orElseThrow(() -> new ResourceNotFoundException("Room not found"));
@@ -127,13 +91,13 @@ public class RoomServiceImpl implements RoomService{
             }
         }
         Room savedRoom = roomRepository.save(room);
-        return getRoomResponse(savedRoom);
+        return savedRoom;
     }
 
     @Override
-    public RoomResponse getRoomById(Long roomId) {
+    public Room getRoomById(Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow(()->new ResourceNotFoundException("Room not Found"));
-        return getRoomResponse(room);
+        return room;
     }
 
 }
