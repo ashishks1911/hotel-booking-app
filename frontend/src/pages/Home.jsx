@@ -1,10 +1,18 @@
 import React from 'react'
+import MainHeader from '../components/MainHeader'
+import HotelService from '../common/HotelService'
+import Parallax from '../common/Parallax'
 
 const Home = () => {
   return (
-    <div>
-      <h2>Welcome to the Home page</h2>
-    </div>
+    <section>
+      <MainHeader />
+      <section className='container'>
+        <Parallax />
+        <HotelService />
+        <Parallax />
+      </section>
+    </section>
   )
 }
 
