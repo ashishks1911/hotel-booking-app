@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/bookings")
+@CrossOrigin("*")
 public class BookingController {
     @Autowired
     private BookingService bookingService;
@@ -53,7 +54,7 @@ public class BookingController {
         try {
             String confirmationCode = bookingService.savingBooking(roomId, bookingRequest);
             return ResponseEntity.status(HttpStatus.OK).body(
-                    "Room booked Successfully ! Your Booking Confirmation Code is :"+confirmationCode);
+                    "Room booked Successfully ! Your Booking Confirmation Code is : "+confirmationCode);
         }catch (InvalidBookingRequestException ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
