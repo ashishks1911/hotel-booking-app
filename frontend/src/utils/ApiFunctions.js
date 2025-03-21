@@ -79,6 +79,9 @@ export async function bookRoom(roomId, booking) {
         return response.data
     } catch (error) {
         if (error.response && error.response.data) {
+            console.log("debugging : ")
+            console.log(error.response)
+            console.log(error.response.data)
             throw new Error(error.response.data)
         } else {
             throw new Error(`Error booking room : ${error.message}`)

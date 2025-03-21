@@ -23,7 +23,7 @@ const RoomCard = ({ room }) => {
             </Card.Text>
           </div>
           <div className="flex-shrink-0 mt-3">
-              <Link to={`/bookings/${room.id}`} className="btn btn-hotel">
+              <Link to={`/book-room/${room.id}`} className="btn btn-hotel">
                 Book Now
               </Link>
           </div>

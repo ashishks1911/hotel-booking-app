@@ -10,6 +10,8 @@ import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import RoomListing from './components/RoomListing.jsx'
 import Admin from './admin/Admin.jsx'
+import Checkout from './booking/CheckOut.jsx'
+import BookingSuccess from './booking/BookingSuccess.jsx'
 
 function App() {
 
@@ -23,8 +25,12 @@ function App() {
             <Route path='/edit/:roomId' element={<EditRoom/>} />
             <Route path='/rooms' element={<Rooms/>} />
             <Route path='/rooms/add' element={<AddRoom/>} />
+            <Route path='/book-room/:roomId' element={<Checkout/>} />
             <Route path='/browse' element={<RoomListing/>} />
             <Route path='/admin' element={<Admin/>} />
+            <Route path='/booking-success' element={<BookingSuccess/>} />
+
+
 
 
           </Routes>
