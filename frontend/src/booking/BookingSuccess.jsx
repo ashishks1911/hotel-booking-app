@@ -5,13 +5,14 @@ import Header from '../common/Header';
 const BookingSuccess = () => {
 
   const location = useLocation();
+  console.log(location);
   const message = location.state?.message;
   const error = location.state?.error;
 
 
   return (
     <div className='container'>
-      <Header title={'Booking Success'} />
+      <Header title={'Booking Status'} />
       <div className='mt-5'>
         {
           message ? (

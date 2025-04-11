@@ -82,7 +82,7 @@ body {
 
 
 .parallax {
-  background-image: url("./assets/images/images-1.webp");
+  background-image: url("./assets/images/images-1.jpg");
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -189,8 +189,8 @@ body {
 
 /* The header banner */
 .header-banner {
-  background-image:  url("./assets/images/services-1.jpg");
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-image:  url("./assets/images/welcome.jpg");
+  /* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
 	animation: gradient 15s ease infinite;
   background-size: cover;
   background-position: center;
@@ -236,3 +236,11 @@ body {
   height: 60px;
   text-align: center;
 }
+
+.room-info-table tbody tr:last-child td{
+  border-bottom: none;
+} 
+
+.room-info-table tbody tr:last-child th{
+  border-bottom: none;
+} 

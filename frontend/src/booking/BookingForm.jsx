@@ -32,9 +32,7 @@ const BookingForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(name + " " + value);
     setBooking({ ...booking, [name]: value });
-    console.log(booking);
     setErrorMessage("");
   }
 
@@ -96,10 +94,8 @@ const BookingForm = () => {
       const confirmationCode = await bookRoom(roomId, booking);
       setIsSubmitted(true);
       navigate("/booking-success", { state: { message: confirmationCode } });
-
     } catch (error) {
-      setErrorMessage(error.message);
-      navigate("//booking-success", { state: { error: errorMessage } })
+      navigate("/booking-success", { state: { error: error.message } })
     }
   }
 
