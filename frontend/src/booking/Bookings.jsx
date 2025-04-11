@@ -21,12 +21,13 @@ const Bookings = () => {
           setIsLoading(false)
         })
     }, 1000)
-  }, []);
+  }, [bookingInfo]);
 
   const handleBookingCancellation = async (bookingId) => {
     try {
       await cancelBooking(bookingId);
       const data = await getAllBookings();
+      console.log("hi" + data);
       setBookingInfo(data);
     }
     catch (error) {

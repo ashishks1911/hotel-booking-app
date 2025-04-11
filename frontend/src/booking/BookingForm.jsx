@@ -15,8 +15,8 @@ const BookingForm = () => {
     guestEmail: "",
     checkInDate: "",
     checkOutDate: "",
-    numberOfAdults: "",
-    numberOfChildren: "0",
+    numOfAdults: "",
+    numOfChildren: "",
   })
 
 
@@ -58,10 +58,9 @@ const BookingForm = () => {
   }
 
   const isGuestCountValid = () => {
-    const adultCount = parseInt(booking.numberOfAdults);
-    const childrenCount = parseInt(booking.numberOfChildren);
+    const adultCount = parseInt(booking.numOfAdults);
+    const childrenCount = parseInt(booking.numOfChildren);
     const totalCount = adultCount + childrenCount;
-    console.log(adultCount+ " : "+childrenCount);
     return totalCount >= 1 && adultCount >= 1;
   }
 
@@ -170,13 +169,13 @@ const BookingForm = () => {
                 <legend>Numbser of Guest</legend>
                 <div className='row'>
                   <div className='col-6'>
-                    <Form.Label htmlFor='numberOfAdults'>Number OfAdults :</Form.Label>
+                    <Form.Label htmlFor='numOfAdults'>Number OfAdults :</Form.Label>
                     <FormControl
                       required
                       type='number'
-                      id="numberOfAdults"
-                      name="numberOfAdults"
-                      value={booking.numberOfAdults}
+                      id="numOfAdults"
+                      name="numOfAdults"
+                      value={booking.numOfAdults}
                       placeholder='0'
                       min={1}
                       onChange={handleInputChange} />
@@ -184,12 +183,12 @@ const BookingForm = () => {
                   </div>
 
                   <div className='col-6'>
-                    <Form.Label htmlFor='numberOfChildren'>Children :</Form.Label>
+                    <Form.Label htmlFor='numOfChildren'>Children :</Form.Label>
                     <FormControl
                       type='number'
-                      id="numberOfChildren"
-                      name="numberOfChildren"
-                      value={booking.numberOfChildren}
+                      id="numOfChildren"
+                      name="numOfChildren"
+                      value={booking.numOfChildren}
                       placeholder='0'
                       onChange={handleInputChange} />
                   </div>

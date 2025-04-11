@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DateSlider from '../common/DateSlider'
 import { parseISO } from 'date-fns';
 const BookingTable = ({ bookingInfo, handleBookingCancellation }) => {
@@ -7,7 +7,6 @@ const BookingTable = ({ bookingInfo, handleBookingCancellation }) => {
 
   const filterBookings = (startDate, endDate) => {
     let filtered = bookingInfo;
-    console.log(filtered[0])
     if (startDate && endDate) {
       filtered = bookingInfo.filter((booking) => {
         const bookingStartDate = parseISO(booking.checkInDate);
@@ -15,6 +14,7 @@ const BookingTable = ({ bookingInfo, handleBookingCancellation }) => {
         return bookingStartDate >= startDate && bookingEndDate
           <= endDate && bookingEndDate > startDate
       })
+
     }
     setFilteredBookings(filtered);
   }
@@ -22,7 +22,7 @@ const BookingTable = ({ bookingInfo, handleBookingCancellation }) => {
   return (
     <section className='container p-4'>
       <DateSlider onDateChange={filterBookings} onFilterChange={filterBookings} />
-      <table className='table'>
+      {filteredBookings.length !== 0 && <table className='table'>
         <thead>
           <tr>
             <th>S/N</th>
@@ -50,8 +50,8 @@ const BookingTable = ({ bookingInfo, handleBookingCancellation }) => {
                 <td>{booking.checkOutDate}</td>
                 <td>{booking.guestName}</td>
                 <td>{booking.guestEmail}</td>
-                <td>{booking.numberOfAdults}</td>
-                <td>{booking.numberOfChildren}</td>
+                <td>{booking.numOfAdults}</td>
+                <td>{booking.numOfChildren}</td>
                 <td>{booking.totalNumOfGuests}</td>
                 <td>{booking.bookingConfirmationCode}</td>
                 <td>
@@ -65,7 +65,8 @@ const BookingTable = ({ bookingInfo, handleBookingCancellation }) => {
           }
         </tbody>
       </table>
-      {filterBookings.length === 0 && <p>No booking found for the selected dates.</p>}
+      }
+      {filteredBookings.length === 0 && <p>No booking found for the selected dates.</p>}
     </section>
   )
 }
