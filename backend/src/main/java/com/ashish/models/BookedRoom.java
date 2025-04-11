@@ -26,9 +26,9 @@ public class BookedRoom {
     @Column(name = "guest_email")
     private String guestEmail;
     @Column(name = "children")
-    private Integer NumOfChildren;
+    private Integer numOfChildren;
     @Column(name="adults")
-    private Integer NumOfAdults;
+    private Integer numOfAdults;
     @Column(name = "total_quest")
     private Integer totalNumOfGuests;
     @Column(name = "confirmation_code")
