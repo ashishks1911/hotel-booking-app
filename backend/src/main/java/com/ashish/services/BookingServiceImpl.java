@@ -1,17 +1,22 @@
 package com.ashish.services;
 
 import com.ashish.exceptions.InvalidBookingRequestException;
+import com.ashish.exceptions.ResourceNotFoundException;
 import com.ashish.models.BookedRoom;
 import com.ashish.models.Room;
 import com.ashish.repositories.BookingRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService{
     private final BookingRepository bookingRepository;
+    private static final Logger logger = LoggerFactory.getLogger(BookingServiceImpl.class);
     private final RoomService roomService;
     @Override
     public List<BookedRoom> getAllBookingsByRoomId(Long id ) {
@@ -25,7 +30,8 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public BookedRoom findByBookingConfirmationCode(String confirmationCode) {
-        return bookingRepository.findByBookingConfirmationCode(confirmationCode);
+        return bookingRepository.findByBookingConfirmationCode(confirmationCode)
+                .orElseThrow(() -> new ResourceNotFoundException("No Booking Found!"));
     }
 
     @Override
@@ -49,7 +55,7 @@ public class BookingServiceImpl implements BookingService{
     private boolean isRoomAvailable(BookedRoom bookingRequest, List<BookedRoom> existingBookings) {
         return existingBookings.stream().noneMatch( existingBooking ->
                 bookingRequest.getCheckInDate().equals(existingBooking.getCheckInDate())
-                || bookingRequest.getCheckOutDate().isBefore(existingBooking.getCheckOutDate())
+                || bookingRequest.getCheckOutDate().isAfter(existingBooking.getCheckOutDate())
 
                 || (bookingRequest.getCheckInDate().isAfter(existingBooking.getCheckInDate())
                         && bookingRequest.getCheckInDate().isBefore(existingBooking.getCheckOutDate()))
