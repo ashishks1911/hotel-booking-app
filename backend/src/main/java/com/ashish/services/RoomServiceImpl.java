@@ -1,14 +1,10 @@
 package com.ashish.services;
 
-import com.ashish.dto.BookingResponse;
 import com.ashish.dto.RoomResponse;
 import com.ashish.exceptions.InternalServerException;
-import com.ashish.exceptions.PhotoRetrivalException;
 import com.ashish.exceptions.ResourceNotFoundException;
-import com.ashish.models.BookedRoom;
 import com.ashish.models.Room;
 import com.ashish.repositories.RoomRepository;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,10 +14,10 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -96,8 +92,12 @@ public class RoomServiceImpl implements RoomService{
 
     @Override
     public Room getRoomById(Long roomId) {
-        Room room = roomRepository.findById(roomId).orElseThrow(()->new ResourceNotFoundException("Room not Found"));
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new ResourceNotFoundException("Room not Found"));
         return room;
+    }
+    @Override
+    public List<Room> getAvailableRooms(LocalDate checkInDate, LocalDate checkOutDate, String roomType){
+        return roomRepository.findAvailableRoomsByDateAndType(checkInDate, checkOutDate, roomType);
     }
 
 }

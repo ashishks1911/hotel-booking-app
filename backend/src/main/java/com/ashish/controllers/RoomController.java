@@ -9,6 +9,7 @@ import com.ashish.services.BookingService;
 import com.ashish.services.RoomService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -87,6 +89,19 @@ public class RoomController {
     public ResponseEntity<Optional<RoomResponse>> getRoomById(@PathVariable Long roomId){
         Room roomResponse = roomService.getRoomById(roomId);
         return ResponseEntity.ok(Optional.of(getRoomResponse(roomResponse)));
+    }
+
+    @GetMapping("/available-rooms")
+    public ResponseEntity<List<RoomResponse>> getAvailableRooms(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate checkInDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate checkOutDate,
+            @RequestParam String roomType) throws SQLException {
+        List<Room> roomResponses = roomService.getAvailableRooms(checkInDate, checkOutDate, roomType);
+        List<RoomResponse> response = new ArrayList<>();
+        for (Room room : roomResponses){
+            response.add(getRoomResponse(room));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     private RoomResponse getRoomResponse(Room room) {
