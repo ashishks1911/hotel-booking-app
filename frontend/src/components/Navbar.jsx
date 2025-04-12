@@ -28,7 +28,7 @@ export default function Navbar() {
           </ul>
           <ul className='d-flex navbar-nav'>
             <li className='nav-item'>
-              <NavLink className="nav-link" aria-current="page" to={"/bookings"}>Find My Bookings</NavLink>
+              <NavLink className="nav-link" aria-current="page" to={"/my-bookings"}>Find My Bookings</NavLink>
             </li>
             <li className='nav-item dropdown'>
               <a className="nav-link dropdown-toggle" id='navbarDropdown'onClick={handleAccountClick}>

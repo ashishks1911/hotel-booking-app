@@ -21,7 +21,7 @@ const Bookings = () => {
           setIsLoading(false)
         })
     }, 1000)
-  }, [bookingInfo]);
+  }, []);
 
   const handleBookingCancellation = async (bookingId) => {
     try {

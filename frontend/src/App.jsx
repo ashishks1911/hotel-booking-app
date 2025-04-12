@@ -13,6 +13,7 @@ import Admin from './admin/Admin.jsx'
 import Checkout from './booking/Checkout.jsx'
 import BookingSuccess from './booking/BookingSuccess.jsx'
 import Bookings from './booking/Bookings.jsx'
+import FindBooking from './booking/FindBooking.jsx'
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
             <Route path='/admin' element={<Admin/>} />
             <Route path='/booking-success' element={<BookingSuccess/>} />
             <Route path='/bookings' element={<Bookings/>} />
+            <Route path='/my-bookings' element={<FindBooking/>} />
 
           </Routes>
         </BrowserRouter>

@@ -176,7 +176,7 @@ const BookingForm = () => {
                       id="numOfAdults"
                       name="numOfAdults"
                       value={booking.numOfAdults}
-                      placeholder='0'
+                      // placeholder='0'
                       min={1}
                       onChange={handleInputChange} />
                     <Form.Control.Feedback type='invalid'> Please select atleast 1 adult.</Form.Control.Feedback>
@@ -189,7 +189,7 @@ const BookingForm = () => {
                       id="numOfChildren"
                       name="numOfChildren"
                       value={booking.numOfChildren}
-                      placeholder='0'
+                      // placeholder='0'
                       onChange={handleInputChange} />
                   </div>
                 </div>
