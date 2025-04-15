@@ -1,9 +1,12 @@
 package com.ashish.dto;
 
-import com.ashish.models.Role;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
-import java.util.Set;
+@Getter
+@Setter
 public class JwtResponse {
     private Long id;
     private String email;
