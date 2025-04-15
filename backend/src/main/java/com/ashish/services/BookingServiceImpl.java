@@ -1,7 +1,7 @@
 package com.ashish.services;
 
-import com.ashish.exceptions.InvalidBookingRequestException;
-import com.ashish.exceptions.ResourceNotFoundException;
+import com.ashish.exception.InvalidInputException;
+import com.ashish.exception.ResourceNotFoundException;
 import com.ashish.models.BookedRoom;
 import com.ashish.models.Room;
 import com.ashish.repositories.BookingRepository;
@@ -37,7 +37,7 @@ public class BookingServiceImpl implements BookingService{
     @Override
     public String savingBooking(Long roomId, BookedRoom bookingRequest) {
         if(bookingRequest.getCheckOutDate().isBefore(bookingRequest.getCheckInDate())){
-            throw new InvalidBookingRequestException("check-in date must come before check-out date");
+            throw new InvalidInputException(("check-in date must come before check-out date"));
         }
         Room room = roomService.getRoomById(roomId);
         List<BookedRoom> existingBookings = room.getBookings();
@@ -46,7 +46,7 @@ public class BookingServiceImpl implements BookingService{
             room.addBooking(bookingRequest);
             bookingRepository.save(bookingRequest);
         }else{
-            throw new InvalidBookingRequestException("This room is not available for the selected dates");
+            throw new InvalidInputException("This room is not available for the selected dates");
         }
         return bookingRequest.getBookingConfirmationCode();
 

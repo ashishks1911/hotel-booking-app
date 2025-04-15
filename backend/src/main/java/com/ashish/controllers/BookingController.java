@@ -2,8 +2,8 @@ package com.ashish.controllers;
 
 import com.ashish.dto.BookingResponse;
 import com.ashish.dto.RoomResponse;
-import com.ashish.exceptions.InvalidBookingRequestException;
-import com.ashish.exceptions.ResourceNotFoundException;
+import com.ashish.exception.InvalidInputException;
+import com.ashish.exception.ResourceNotFoundException;
 import com.ashish.models.BookedRoom;
 import com.ashish.models.Room;
 import com.ashish.services.BookingService;
@@ -11,6 +11,7 @@ import com.ashish.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class BookingController {
     private RoomService roomService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<BookingResponse>> getAllBookings(){
          List<BookedRoom> bookedRooms =  bookingService.getAllBookings();
          List<BookingResponse> bookingResponses = new ArrayList<>();
@@ -55,7 +57,7 @@ public class BookingController {
             String confirmationCode = bookingService.savingBooking(roomId, bookingRequest);
             return ResponseEntity.status(HttpStatus.OK).body(
                     "Room booked Successfully ! Your Booking Confirmation Code is : "+confirmationCode);
-        }catch (InvalidBookingRequestException ex){
+        }catch (InvalidInputException ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }

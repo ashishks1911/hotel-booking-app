@@ -1,8 +1,6 @@
 package com.ashish.services;
 
-import com.ashish.dto.RoomResponse;
-import com.ashish.exceptions.InternalServerException;
-import com.ashish.exceptions.ResourceNotFoundException;
+import com.ashish.exception.ResourceNotFoundException;
 import com.ashish.models.Room;
 import com.ashish.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,7 +70,7 @@ public class RoomServiceImpl implements RoomService{
     }
 
     @Override
-    public Room updateRoom(Long roomId, MultipartFile photo, String roomType, BigDecimal roomPrice) throws IOException, SQLException, InternalServerException {
+    public Room updateRoom(Long roomId, MultipartFile photo, String roomType, BigDecimal roomPrice) throws Exception {
         byte[] photoBytes = photo!=null && !photo.isEmpty()? photo.getBytes() : getRoomPhotoByRoomId(roomId);
 
         Room room  = roomRepository.findById(roomId).orElseThrow(() -> new ResourceNotFoundException("Room not found"));
@@ -83,7 +80,7 @@ public class RoomServiceImpl implements RoomService{
             try {
                 room.setPhoto(new SerialBlob(photoBytes));
             }catch (SQLException e){
-                throw new InternalServerException("Error updating room");
+                throw new Exception("Error updating room");
             }
         }
         Room savedRoom = roomRepository.save(room);
