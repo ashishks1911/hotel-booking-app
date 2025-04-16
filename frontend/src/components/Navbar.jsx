@@ -1,11 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useContext } from 'react';
 import { Link, NavLink } from 'react-router-dom'
+import { authContext } from '../store/AuthProvider';
 
 export default function Navbar() {
-  const[showAccount, setShowAccount] = useState(false);
-  
-  let handleAccountClick = ()=>{
+  const [showAccount, setShowAccount] = useState(false);
+
+  let handleAccountClick = () => {
     setShowAccount(!showAccount);
+  }
+  const handleClick = () => {
+    setShowAccount(!showAccount);
+  }
+  const isLogin = localStorage.getItem("userId")
+  const role = localStorage.getItem("role")
+  const auth = useContext(authContext);
+  const handleLogout = () => {
+    auth.handleLogout()
+    setShowAccount(!showAccount);
+    navigate("/", { state: { message: " You have been logged out!" } })
+    window.location.reload()
   }
 
   return (
@@ -22,32 +36,38 @@ export default function Navbar() {
             <li className="nav-item">
               <NavLink className="nav-link active" aria-current="page" to={"/browse"} >Browse all rooms</NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" aria-current="page" to={"/admin"} >Admin</NavLink>
-            </li>
+            {isLogin && role === 'ROLE_ADMIN' && (
+              <li className="nav-item">
+                <NavLink className="nav-link" aria-current="page" to={"/admin"} >Admin</NavLink>
+              </li>
+            )}
           </ul>
           <ul className='d-flex navbar-nav'>
             <li className='nav-item'>
               <NavLink className="nav-link" aria-current="page" to={"/my-bookings"}>Find My Bookings</NavLink>
             </li>
             <li className='nav-item dropdown'>
-              <a className="nav-link dropdown-toggle" id='navbarDropdown'onClick={handleAccountClick}>
+              <a className="nav-link dropdown-toggle" role='button' id='navbarDropdown' onClick={handleAccountClick}>
                 Account
               </a>
-              <ul className={`dropdown-menu ${showAccount? "show":"" }`} aria-labelledby="navbarDropdown">
-                <li>
-                  <Link to={"/login"} className='dropdown-item'>Login</Link>
-                </li>
+              <ul className={`dropdown-menu ${showAccount ? "show" : ""}`} aria-labelledby="navbarDropdown">
+                {!isLogin &&
+                  <li>
+                    <Link to={"/login"} className='dropdown-item' onClick={handleClick}>Login</Link>
+                  </li>
+                }
+                {isLogin && (<>
+                  <li>
+                    <Link to={"/profile"} className='dropdown-item' onClick={handleClick}>Profile</Link>
+                  </li>
 
-                <li>
-                  <Link to={"/profile"} className='dropdown-item'>Profile</Link>
-                </li>
-
-                <li>
-                  <Link to={"/logout"} className='dropdown-item'>Logout</Link>
-                </li>
+                  <li>
+                    <button className='dropdown-item' onClick={handleLogout}>Logout</button>
+                  </li>
+                </>
+                )
+                }
               </ul>
-
             </li>
 
           </ul>

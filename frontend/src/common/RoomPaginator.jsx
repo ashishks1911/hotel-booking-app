@@ -3,9 +3,6 @@ import React from 'react'
 function RoomPaginator({currentPage, totalPages, onPageChange}) {
 
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-  console.log(pageNumbers);
-  console.log(currentPage);
-  console.log(totalPages);
 
   return (
     <nav>

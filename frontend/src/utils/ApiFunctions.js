@@ -4,6 +4,14 @@ export const api = axios.create({
     baseURL: "http://localhost:9191"
 })
 
+export const getHeader = () => {
+    const token = localStorage.getItem("token");
+    return {
+        Authentication: `Bearer ${token}`,
+        "Content-Type": "application/json"
+    }
+}
+
 //This function adds a new room to the database 
 export async function addRoom(photo, roomType, roomPrice) {
     const formData = new FormData();
@@ -129,5 +137,42 @@ export async function getAvailableRooms(checkInDate, checkOutDate, roomType) {
     }
     catch (error) {
         throw new Error(`Error cancelling booking : ${error.message}`)
+    }
+}
+
+export async function registerUser(registration) {
+    try {
+        const response = await api.post(`/auth/signup`, registration);
+        return response.status
+    } catch (error) {
+        if (error.response && error.response.data) {
+            throw new Error(error.response.data)
+        } else {
+            throw new Error(`User registration error : ${error.message}`)
+        }
+    }
+
+}
+
+export async function loginUser(login) {
+    try {
+        const response = await api.post(`/auth/login`, login);
+        if(response.status<=200 && response.status<300){
+            return response.data;
+        }
+        return null;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export async function profile(userId){
+    try {
+        const response = await api.get(`/users/${userId}`)
+        return response.data;
+        
+    } catch (error) {
+        throw new Error(`Error fetching user : ${error.message}`)
     }
 }

@@ -14,31 +14,40 @@ import Checkout from './booking/Checkout.jsx'
 import BookingSuccess from './booking/BookingSuccess.jsx'
 import Bookings from './booking/Bookings.jsx'
 import FindBooking from './booking/FindBooking.jsx'
+import Login from './auth/Login.jsx'
+import Logout from './auth/Logout.jsx'
+import SignUp from './auth/SignUp.jsx'
+import { AuthProvider } from './store/AuthProvider'
+import Profile from './auth/Profile.jsx'
 
 function App() {
 
   return (
-    <>
+    <AuthProvider>
       <main>
         <BrowserRouter>
-          <Navbar/>
+          <Navbar />
           <Routes>
-            <Route path='/' element={<Home/>} />
-            <Route path='/edit/:roomId' element={<EditRoom/>} />
-            <Route path='/rooms' element={<Rooms/>} />
-            <Route path='/rooms/add' element={<AddRoom/>} />
-            <Route path='/book/:roomId' element={<Checkout/>} />
-            <Route path='/browse' element={<RoomListing/>} />
-            <Route path='/admin' element={<Admin/>} />
-            <Route path='/booking-success' element={<BookingSuccess/>} />
-            <Route path='/bookings' element={<Bookings/>} />
-            <Route path='/my-bookings' element={<FindBooking/>} />
+            <Route path='/' element={<Home />} />
+            <Route path='/edit/:roomId' element={<EditRoom />} />
+            <Route path='/rooms' element={<Rooms />} />
+            <Route path='/rooms/add' element={<AddRoom />} />
+            <Route path='/book/:roomId' element={<Checkout />} />
+            <Route path='/browse' element={<RoomListing />} />
+            <Route path='/admin' element={<Admin />} />
+            <Route path='/booking-success' element={<BookingSuccess />} />
+            <Route path='/bookings' element={<Bookings />} />
+            <Route path='/my-bookings' element={<FindBooking />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/signup' element={<SignUp />} />
+            <Route path='/profile' element={<Profile />} />
+
 
           </Routes>
         </BrowserRouter>
-        <Footer/>
+        <Footer />
       </main>
-    </>
+    </AuthProvider>
   )
 }
 
